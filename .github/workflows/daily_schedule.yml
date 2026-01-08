@@ -37,3 +37,15 @@ jobs:
           # Only commit if the file actually changed
           git commit -m "Daily Market Log update" || exit 0
           git push
+
+          - name: Notify on Failure
+        if: failure() # Only runs if the bot crashed
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 CRITICAL: Sleeper Agent Crashed!',
+              body: 'The daily run failed. Please check the logs immediately to prevent GitHub from disabling the schedule.'
+            })
