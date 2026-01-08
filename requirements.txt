@@ -1,5 +1,7 @@
 pandas==2.2.0
 yfinance==0.2.36
+pandas_ta
+requests
 nselib
 scipy
 pandas_market_calendars
