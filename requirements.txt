@@ -1,7 +1,8 @@
 pandas==2.2.0
+numpy==1.26.4
 yfinance==0.2.36
-pandas-ta-classic
 requests
+git+https://github.com/twopirllc/pandas-ta.git@development
 nselib
 scipy
 pandas_market_calendars
