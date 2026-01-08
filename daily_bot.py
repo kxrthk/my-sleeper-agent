@@ -1,6 +1,6 @@
-import yfinance as yf
 import pandas as pd
-import pandas_ta_classic as ta
+import pandas_ta_classic as ta  # Use 'pandas_ta_classic'
+import yfinance as yf
 import requests
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
