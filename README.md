@@ -1,6 +1,6 @@
 Project Sentinel: Autonomous Market AI
 
-![Status](https://github.com/YOUR_USERNAME/my-sleeper-agent/actions/workflows/daily_schedule.yml/badge.svg)
+![Status](https://github.com/kxrthk/my-sleeper-agent/actions/workflows/daily_schedule.yml/badge.svg)
 
 **Project Sentinel** is a fully autonomous "Sleeper Agent" designed to observe the Indian Equity Markets (NSE) for 5 years without human intervention.
 
