@@ -10,9 +10,9 @@ import shutil
 import json
 
 # --- CONFIGURATION ---
-current_year = datetime.now().year
-LOG_FILE = f"trading_journal_{current_year}.csv"
-BRAIN_FILE = "bot_brain.json" # <--- NEW: Stores the Karma Score
+# We use the static name to match your existing file
+LOG_FILE = "trading_journal.csv" 
+BRAIN_FILE = "bot_brain.json"    # Stores the Karma Score
 
 # --- SECRETS ---
 BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
