@@ -2,12 +2,12 @@ name: Daily Sleeper Agent
 
 on:
   schedule:
-    # Runs at 10:30 UTC = 4:00 PM Indian Standard Time (After market close)
-    - cron: '30 10 * * *'
-  workflow_dispatch: # Allows you to click a button to test it manually
+    - cron: '30 10 * * *' # Runs at 4:00 PM IST
+  workflow_dispatch:
 
 permissions:
-  contents: write # IMPORTANT: Allows the bot to save the CSV file
+  contents: write
+  issues: write # Needed to create an issue if it crashes
 
 jobs:
   run-bot:
@@ -20,11 +20,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.11' # Locked to 3.11
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run Trading Bot
         run: python daily_bot.py
@@ -33,19 +32,19 @@ jobs:
         run: |
           git config --global user.name "SleeperBot"
           git config --global user.email "bot@noreply.github.com"
-          git add trading_journal.csv
-          # Only commit if the file actually changed
-          git commit -m "Daily Market Log update" || exit 0
+          git add trading_journal_*.csv
+          git commit -m "Daily Update" || exit 0
           git push
 
-          - name: Notify on Failure
-        if: failure() # Only runs if the bot crashed
+      # --- LOOPHOLE PATCH: FAILURE NOTIFICATION ---
+      - name: Notify on Failure
+        if: failure()
         uses: actions/github-script@v6
         with:
           script: |
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: '🚨 CRITICAL: Sleeper Agent Crashed!',
+              title: '🚨 BOT CRASHED: Check Logs',
               body: 'The daily run failed. Please check the logs immediately to prevent GitHub from disabling the schedule.'
             })
