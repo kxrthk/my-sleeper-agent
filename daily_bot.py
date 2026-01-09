@@ -79,7 +79,7 @@ def run_sentinel():
         res = analyze_and_learn(stock, brain['karma_score'])
         if res and res['Action'] != "WAIT":
             found_opportunities.append(res)
-        time.sleep(0.5) # Be polite to servers
+        time.sleep(1.5) # Be polite to servers
 
     # 3. Memory Persistence
     if found_opportunities:
