@@ -1,9 +1,9 @@
 numpy==1.26.4
 pandas==2.2.0
-pandas-ta-classic==0.3.15
+pandas-ta-classic==0.3.14
 yfinance==0.2.36
-requests
-nselib
-beautifulsoup4
-scipy
-pandas_market_calendars
+requests==2.32.5
+nselib==2.4.1
+beautifulsoup4==4.14.3
+scipy==1.16.3
+pandas_market_calendars==5.2.4
