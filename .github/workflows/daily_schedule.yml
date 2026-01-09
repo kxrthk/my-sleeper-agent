@@ -2,7 +2,6 @@ name: Sovereign Agent Daily Scan
 
 on:
   schedule:
-    # Runs at 16:30 IST (11:00 AM UTC) every Monday-Friday
     - cron: '0 11 * * 1-5'
   workflow_dispatch:
 
@@ -25,10 +24,9 @@ jobs:
           cache: false
 
       - name: 3. Sync Libraries
-           run:
-             pip uninstall -y numpy pandas pandas-ta-classic
-             pip install --no-cache-dir -r requirements.txt
-
+        run: |
+          pip uninstall -y numpy pandas pandas-ta-classic
+          pip install --no-cache-dir -r requirements.txt
 
       - name: 4. Execute Analysis & Discovery
         env:
