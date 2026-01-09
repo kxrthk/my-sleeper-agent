@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: 3. Install Core Stack (Safe)
+      - name: 3. Install Core Stack
         run: |
           python -m pip install --upgrade pip
           pip install --no-cache-dir numpy==1.26.4 pandas==2.2.0
@@ -34,7 +34,7 @@ jobs:
 
       - name: 5. Install Remaining Libraries
         run: |
-          pip install --no-cache-dir yfinance==0.2.36 requests==2.32.5 nselib==2.4.1 beautifulsoup4==4.14.3 scipy==1.16.3 pandas_market_calendars==5.2.4
+          pip install --no-cache-dir yfinance==0.2.36 requests==2.32.5 beautifulsoup4==4.14.3 scipy==1.16.3 pandas_market_calendars==5.2.4
 
       - name: 6. Execute Analysis & Discovery
         env:
