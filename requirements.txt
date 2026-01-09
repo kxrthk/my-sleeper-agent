@@ -4,5 +4,6 @@ pandas-ta-classic==0.3.59
 yfinance==0.2.36
 requests
 nselib
+beautifulsoup4
 scipy
 pandas_market_calendars
