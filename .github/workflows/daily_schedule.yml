@@ -3,12 +3,11 @@ name: Sovereign Agent Daily Scan
 on:
   schedule:
     # Runs at 11:15 AM UTC (4:45 PM IST) Mon-Fri
-    # Shifted by 15 mins to avoid high-traffic delays on GitHub
     - cron: '15 11 * * 1-5'
-  workflow_dispatch: # Allows you to trigger the bot manually via the 'Actions' tab
+  workflow_dispatch: # Allows manual trigger
 
 permissions:
-  contents: write # CRITICAL: Grants the bot permission to save changes back to your repo
+  contents: write # CRITICAL: Allows bot to save memory files
 
 jobs:
   run-and-sync:
@@ -17,43 +16,41 @@ jobs:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches full history to ensure rebase works smoothly
+          fetch-depth: 0
 
       - name: 2. Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # Speeds up runs by remembering previous installs
+          cache: 'pip'
 
-     - name: 3. Install Requirements
+      - name: 3. Surgical Dependency Install
         run: |
           python -m pip install --upgrade pip
-          # Explicitly installing the problematic library first
-          pip install pandas-ta-classic==0.3.15 
-          pip install -r requirements.txt
+          # We force install the version that works with Numpy 1.26.4
+          pip install numpy==1.26.4
+          pip install pandas==2.2.0
+          pip install pandas-ta-classic==0.3.15
+          pip install yfinance==0.2.36 requests nselib beautifulsoup4 scipy pandas_market_calendars
 
-      - name: 4. Execute Sleeper Agent
+      - name: 4. Execute Sovereign Agent
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python daily_bot.py
+        # Adding PYTHONPATH ensures the bot can see its own installed modules
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
+          python daily_bot.py
 
       - name: 5. Force-Sync Memory (Commit & Push)
         run: |
-          # Configure the identity for the commit
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Pull latest changes from main to avoid "rejected" push errors
           git pull origin main --rebase
-          
-          # Stage only the memory files
           git add trading_journal.csv bot_brain.json
-          
-          # Only commit if there are actual changes to prevent "empty commit" errors
           if git diff --staged --quiet; then
-            echo "No changes detected in memory files. Skipping push."
+            echo "No changes detected. Skipping push."
           else
-            git commit -m "🧠 Agent Learning Update: $(date +'%Y-%m-%d %H:%M')"
+            git commit -m "🧠 Sovereign Memory Update: $(date +'%Y-%m-%d %H:%M')"
             git push origin main
           fi
